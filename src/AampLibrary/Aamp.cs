@@ -1,11 +1,13 @@
 ﻿using AampLibrary.Structures;
 using Revrs;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace AampLibrary;
 
 public class Aamp : ParameterList
 {
     public AampFlags Flags { get; set; } = AampFlags.IsLittleEndian | AampFlags.IsUtf8;
+    public string Type { get; set; } = "xml";
 
     public static Aamp FromBinary(Span<byte> data)
     {
@@ -24,9 +26,12 @@ public class Aamp : ParameterList
 
     }
 
-    internal Aamp(ref ImmutableAamp aamp)
+    internal unsafe Aamp(ref ImmutableAamp aamp)
         : base(ref aamp, ref aamp.IO, 0)
     {
-
+        fixed (byte* ptr = aamp.Type) {
+            Type = Utf8StringMarshaller.ConvertToManaged(ptr)
+                ?? string.Empty;
+        }
     }
 }

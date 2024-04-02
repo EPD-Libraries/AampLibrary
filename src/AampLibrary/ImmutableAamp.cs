@@ -6,9 +6,10 @@ using System.Runtime.InteropServices.Marshalling;
 
 namespace AampLibrary;
 
-public ref struct ImmutableAamp
+public unsafe ref struct ImmutableAamp
 {
     public AampHeader Header;
+    public Span<byte> Type;
     public Span<byte> Lists;
     public Span<byte> Objects;
     public Span<byte> ParameterData;
@@ -41,7 +42,7 @@ public ref struct ImmutableAamp
                 """);
         }
 
-        reader.Move(Header.ParameterIOOffset);
+        Type = reader.ReadSpan<byte>(Header.ParameterIOOffset);
         Lists = reader.Data[reader.Position..];
         Objects = reader.Data[reader.Position..];
 
