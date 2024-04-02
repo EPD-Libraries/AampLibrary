@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using AampLibrary.Runner.Benchmarks;
+using BenchmarkDotNet.Running;
+
+BenchmarkRunner.Run<AampBenchmarks>();

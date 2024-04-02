@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AampLibrary.Runner": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\bin\\AampLibrary\\AirWall.bxml\""
+    }
+  }
+}
