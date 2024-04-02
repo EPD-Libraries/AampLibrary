@@ -1,5 +1,4 @@
-﻿using AampLibrary.IO.Hashing;
-using AampLibrary.Structures;
+﻿using AampLibrary.Structures;
 using Revrs;
 
 namespace AampLibrary;
@@ -8,16 +7,16 @@ public class Aamp : ParameterList
 {
     public AampFlags Flags { get; set; } = AampFlags.IsLittleEndian | AampFlags.IsUtf8;
 
-    public static Aamp FromBinary(Span<byte> data, IAampNameResolver? aampNameResolver = null)
+    public static Aamp FromBinary(Span<byte> data)
     {
         RevrsReader reader = new(data);
         ImmutableAamp aamp = new(ref reader);
-        return FromImmutable(ref aamp, aampNameResolver);
+        return FromImmutable(ref aamp);
     }
 
-    public static Aamp FromImmutable(ref ImmutableAamp aamp, IAampNameResolver? aampNameResolver = null)
+    public static Aamp FromImmutable(ref ImmutableAamp aamp)
     {
-        return new(ref aamp, aampNameResolver);
+        return new(ref aamp);
     }
 
     public Aamp()
@@ -25,8 +24,8 @@ public class Aamp : ParameterList
 
     }
 
-    internal Aamp(ref ImmutableAamp aamp, IAampNameResolver? aampNameResolver = null)
-        : base(ref aamp, ref aamp.IO, aampNameResolver ?? HashNameResolver.Shared)
+    internal Aamp(ref ImmutableAamp aamp)
+        : base(ref aamp, ref aamp.IO)
     {
 
     }

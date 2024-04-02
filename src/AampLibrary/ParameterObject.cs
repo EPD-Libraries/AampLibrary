@@ -25,12 +25,12 @@ public class ParameterObject : Dictionary<uint, Parameter>, IDictionary<string, 
     {
     }
 
-    internal ParameterObject(ref ImmutableAamp aamp, ref AampParameterObject parameterObj, IAampNameResolver aampNameResolver) : base(parameterObj.ParameterCount)
+    internal ParameterObject(ref ImmutableAamp aamp, ref AampParameterObject parameterObj) : base(parameterObj.ParameterCount)
     {
         for (int i = 0; i < parameterObj.ParameterCount; i++) {
             ref AampParameter parameter = ref aamp.GetParameter(i, parameterObj.ParametersOffset, out int parameterOffset);
 
-            int dataOffset = (parameterOffset + parameter.DataOffset * 4);
+            int dataOffset = parameterOffset + parameter.DataOffset * 4;
             RevrsReader reader = new(aamp.ParameterData[dataOffset..], Endianness.Little);
 
             this[parameter.Name] = parameter.Type switch {

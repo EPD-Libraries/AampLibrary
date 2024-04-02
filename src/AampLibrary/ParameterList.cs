@@ -13,20 +13,18 @@ public class ParameterList
         Lists = [];
     }
 
-    internal ParameterList(ref ImmutableAamp aamp, ref AampParameterList parameterList, IAampNameResolver aampNameResolver)
+    internal ParameterList(ref ImmutableAamp aamp, ref AampParameterList parameterList)
     {
         Lists = new(parameterList.ListCount);
         for (int i = 0; i < parameterList.ListCount; i++) {
             ref AampParameterList pList = ref aamp.GetList(i, parameterList.ListsOffset);
-            Lists[pList.Name]
-                = new(ref aamp, ref pList, aampNameResolver);
+            Lists[pList.Name] = new(ref aamp, ref pList);
         }
 
         Objects = new(parameterList.ObjectCount);
         for (int i = 0; i < parameterList.ObjectCount; i++) {
             ref AampParameterObject pObj = ref aamp.GetObject(i, parameterList.ObjectsOffset);
-            Objects[pObj.Name]
-                = new(ref aamp, ref pObj, aampNameResolver);
+            Objects[pObj.Name] = new(ref aamp, ref pObj);
         }
     }
 }
