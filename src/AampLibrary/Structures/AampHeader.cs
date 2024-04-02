@@ -11,6 +11,7 @@ public enum AampFlags : int
 public struct AampHeader
 {
     public const uint MAGIC = 0x504D4141;
+    public const int SIZE = 0x30;
 
     public uint Magic;
     public uint Version;
