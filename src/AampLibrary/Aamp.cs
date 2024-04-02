@@ -25,7 +25,7 @@ public class Aamp : ParameterList
     }
 
     internal Aamp(ref ImmutableAamp aamp)
-        : base(ref aamp, ref aamp.IO)
+        : base(ref aamp, ref aamp.IO, 0)
     {
 
     }

@@ -49,21 +49,21 @@ public ref struct ImmutableAamp
         ParameterData = reader.Data[reader.Position..];
     }
 
-    public readonly ref AampParameterList GetList(int index, int offsetRelativeToLists)
+    public readonly ref AampParameterList GetList(int index, int offsetRelativeToLists, out int relativeListOffset)
     {
-        return ref Lists[((offsetRelativeToLists * 4) + index * AampParameterList.SIZE)..]
+        return ref Lists[(relativeListOffset = offsetRelativeToLists + index * AampParameterList.SIZE)..]
             .Read<AampParameterList>();
     }
 
-    public readonly ref AampParameterObject GetObject(int index, int offsetRelativeToObjects)
+    public readonly ref AampParameterObject GetObject(int index, int offsetRelativeToObjects, out int relativeObjectOffset)
     {
-        return ref Objects[((offsetRelativeToObjects * 4) + index * AampParameterObject.SIZE)..]
+        return ref Objects[(relativeObjectOffset = offsetRelativeToObjects + index * AampParameterObject.SIZE)..]
             .Read<AampParameterObject>();
     }
 
     public readonly ref AampParameter GetParameter(int index, int offsetRelativeToObjects, out int relativeParameterOffset)
     {
-        return ref ParameterData[(relativeParameterOffset = (offsetRelativeToObjects * 4) + index * AampParameter.SIZE)..]
+        return ref ParameterData[(relativeParameterOffset = offsetRelativeToObjects + index * AampParameter.SIZE)..]
             .Read<AampParameter>();
     }
 
