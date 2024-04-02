@@ -1,11 +1,13 @@
-﻿using AampLibrary.Primitives;
+﻿using AampLibrary.IO.Hashing;
+using AampLibrary.Primitives;
 using AampLibrary.Structures;
 using Revrs;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace AampLibrary;
 
-public class ParameterObject : Dictionary<string, Parameter>
+public class ParameterObject : Dictionary<uint, Parameter>, IDictionary<string, Parameter>
 {
     public ParameterObject()
     {
@@ -15,11 +17,11 @@ public class ParameterObject : Dictionary<string, Parameter>
     {
     }
 
-    public ParameterObject(IEnumerable<KeyValuePair<string, Parameter>> collection) : base(collection)
+    public ParameterObject(IEnumerable<KeyValuePair<uint, Parameter>> collection) : base(collection)
     {
     }
 
-    public ParameterObject(IDictionary<string, Parameter> dictionary) : base(dictionary)
+    public ParameterObject(IDictionary<uint, Parameter> dictionary) : base(dictionary)
     {
     }
 
@@ -31,7 +33,7 @@ public class ParameterObject : Dictionary<string, Parameter>
             int dataOffset = (parameterOffset + parameter.DataOffset * 4);
             RevrsReader reader = new(aamp.ParameterData[dataOffset..], Endianness.Little);
 
-            this[aampNameResolver.GetName(parameter.Name)] = parameter.Type switch {
+            this[parameter.Name] = parameter.Type switch {
                 AampParameterType.Bool => reader.Read<uint>() != 0,
                 AampParameterType.Float => reader.Read<float>(),
                 AampParameterType.Int => reader.Read<int>(),
@@ -59,6 +61,63 @@ public class ParameterObject : Dictionary<string, Parameter>
             };
         }
     }
+
+    public Parameter this[string key] {
+        get => base[Crc32.ComputeHash(key)];
+        set => base[Crc32.ComputeHash(key)] = value;
+    }
+
+    public bool IsReadOnly => false;
+    ICollection<Parameter> IDictionary<string, Parameter>.Values => Values;
+    ICollection<string> IDictionary<string, Parameter>.Keys
+        => throw new NotSupportedException(
+            "Accessing string values is not supported on a hashed dictionary.");
+
+    public void Add(string key, Parameter value)
+    {
+        Add(Crc32.ComputeHash(key), value);
+    }
+
+    public void Add(KeyValuePair<string, Parameter> item)
+    {
+        Add(Crc32.ComputeHash(item.Key), item.Value);
+    }
+
+    public bool Contains(KeyValuePair<string, Parameter> item)
+    {
+        return this[item.Key] == item.Value;
+    }
+
+    public bool ContainsKey(string key)
+    {
+        return ContainsKey(Crc32.ComputeHash(key));
+    }
+
+    public void CopyTo(KeyValuePair<string, Parameter>[] array, int arrayIndex)
+    {
+        foreach (var (key, value) in array.AsSpan()[arrayIndex..]) {
+            this[Crc32.ComputeHash(key)] = value;
+        }
+    }
+
+    public bool Remove(string key)
+    {
+        return Remove(Crc32.ComputeHash(key));
+    }
+
+    public bool Remove(KeyValuePair<string, Parameter> item)
+    {
+        return Remove(Crc32.ComputeHash(item.Key));
+    }
+
+    public bool TryGetValue(string key, [MaybeNullWhen(false)] out Parameter value)
+    {
+        return TryGetValue(Crc32.ComputeHash(key), out value);
+    }
+
+    IEnumerator<KeyValuePair<string, Parameter>> IEnumerable<KeyValuePair<string, Parameter>>.GetEnumerator()
+        => throw new NotSupportedException(
+            "Accessing string values is not supported on a hashed dictionary.");
 
     private static T[] ReadArray<T>(ref RevrsReader reader) where T : unmanaged
     {
