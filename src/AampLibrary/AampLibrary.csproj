@@ -11,4 +11,8 @@
     <PackageReference Include="Revrs" Version="1.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\lib\VYaml\VYaml\VYaml.csproj" />
+  </ItemGroup>
+
 </Project>
