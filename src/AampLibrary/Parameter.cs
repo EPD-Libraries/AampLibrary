@@ -197,7 +197,7 @@ public class Parameter
         };
     }
 
-    public int GetInt32()
+    public int GetInt()
     {
         return Type switch {
             AampParameterType.Int => _value.Int,
