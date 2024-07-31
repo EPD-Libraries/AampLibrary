@@ -141,19 +141,22 @@ public class Parameter
     }
 
     public static implicit operator Parameter(int[] value) => new(value);
-    public Parameter(int[] value) : this(AampParameterType.IntArray)
+    public static implicit operator Parameter(List<int> value) => new(value);
+    public Parameter(IList<int> value) : this(AampParameterType.IntArray)
     {
         _referenceValue = value;
     }
 
     public static implicit operator Parameter(float[] value) => new(value);
-    public Parameter(float[] value) : this(AampParameterType.FloatArray)
+    public static implicit operator Parameter(List<float> value) => new(value);
+    public Parameter(IList<float> value) : this(AampParameterType.FloatArray)
     {
         _referenceValue = value;
     }
 
     public static implicit operator Parameter(uint[] value) => new(value);
-    public Parameter(uint[] value) : this(AampParameterType.UInt32Array)
+    public static implicit operator Parameter(List<uint> value) => new(value);
+    public Parameter(IList<uint> value) : this(AampParameterType.UInt32Array)
     {
         _referenceValue = value;
     }
@@ -306,28 +309,28 @@ public class Parameter
         };
     }
 
-    public int[] GetIntArray()
+    public IList<int> GetIntArray()
     {
         return _referenceValue switch {
-            int[] => (int[])_referenceValue,
+            IList<int> result => result,
             _ => throw new InvalidOperationException(
                 $"Invalid type '{typeof(int[])}', expected '{Type}'")
         };
     }
 
-    public float[] GetFloatArray()
+    public IList<float> GetFloatArray()
     {
         return _referenceValue switch {
-            float[] => (float[])_referenceValue,
+            IList<float> result => result,
             _ => throw new InvalidOperationException(
                 $"Invalid type '{typeof(float[])}', expected '{Type}'")
         };
     }
 
-    public uint[] GetUInt32Array()
+    public IList<uint> GetUInt32Array()
     {
         return _referenceValue switch {
-            uint[] => (uint[])_referenceValue,
+            IList<uint> result => result,
             _ => throw new InvalidOperationException(
                 $"Invalid type '{typeof(uint[])}', expected '{Type}'")
         };
