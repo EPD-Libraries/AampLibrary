@@ -1,9 +1,10 @@
 ﻿using AampLibrary;
 using AampLibrary.IO;
 using AampLibrary.Runner.Helpers;
+using AampLibrary.Yaml;
+using System.Text;
 
-Aamp aamp = TestAampGenerator.CreateAamp();
-string yaml = aamp.ToYaml(new AampKeyProvider([
+AampKeyProvider keyProvider = new([
     "TestObject",
     "ListObject",
     "TestObject2",
@@ -28,5 +29,14 @@ string yaml = aamp.ToYaml(new AampKeyProvider([
     "UInt32Array",
     "ByteArray",
     "StringRef",
-]));
-Console.WriteLine(yaml);
+]);
+
+Aamp aamp = TestAampGenerator.CreateAamp();
+string yaml = aamp.ToYaml(keyProvider);
+
+// Console.WriteLine(yaml);
+
+byte[] utf8Yaml = Encoding.UTF8.GetBytes(yaml);
+Aamp fromYaml = AampYamlParser.FromYaml(new(utf8Yaml));
+
+Console.WriteLine(fromYaml.ToYaml(keyProvider));
