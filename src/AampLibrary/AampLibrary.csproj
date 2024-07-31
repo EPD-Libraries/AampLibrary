@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Revrs" Version="1.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\lib\VYaml\VYaml\VYaml.csproj" />
+    <PackageReference Include="Revrs" Version="1.0.6" />
+    <PackageReference Include="VYaml" Version="0.27.1" />
   </ItemGroup>
 
 </Project>
