@@ -164,6 +164,7 @@ public class Parameter
         _referenceValue = value;
     }
 
+    public static implicit operator Parameter((string Value, AampStringType Type) stringDefinition) => new(stringDefinition.Value, stringDefinition.Type);
     public Parameter(string value, AampStringType stringType) : this((AampParameterType)stringType)
     {
         _referenceValue = value;
