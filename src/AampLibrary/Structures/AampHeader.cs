@@ -1,13 +1,5 @@
 ﻿namespace AampLibrary.Structures;
 
-[Flags]
-public enum AampFlags : int
-{
-    None = 0,
-    IsLittleEndian = 1 << 0,
-    IsUtf8 = 1 << 1,
-}
-
 public struct AampHeader
 {
     public const uint MAGIC = 0x504D4141;

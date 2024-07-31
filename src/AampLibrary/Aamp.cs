@@ -1,5 +1,4 @@
 ﻿using AampLibrary.IO;
-using AampLibrary.Structures;
 using AampLibrary.Yaml;
 using Revrs;
 using System.Buffers;
@@ -7,6 +6,14 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 
 namespace AampLibrary;
+
+[Flags]
+public enum AampFlags : int
+{
+    None = 0,
+    IsLittleEndian = 1 << 0,
+    IsUtf8 = 1 << 1,
+}
 
 public class Aamp : ParameterList
 {
