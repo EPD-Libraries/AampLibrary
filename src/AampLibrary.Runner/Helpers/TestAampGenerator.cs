@@ -32,6 +32,15 @@ public static class TestAampGenerator
                     ["ByteArray"] = CreateByteArray(),
                     ["StringRef"] = CreateStringRef()
                 }
+            },
+            Lists = new() {
+                ["ListObject"] = new() {
+                    Objects = new() {
+                        ["TestObject2"] = new() {
+                            ["Bool"] = true
+                        }
+                    }
+                }
             }
         };
     }

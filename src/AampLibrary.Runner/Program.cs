@@ -5,6 +5,8 @@ using AampLibrary.Runner.Helpers;
 Aamp aamp = TestAampGenerator.CreateAamp();
 string yaml = aamp.ToYaml(new AampKeyProvider([
     "TestObject",
+    "ListObject",
+    "TestObject2",
     "Bool",
     "Float",
     "Int",
