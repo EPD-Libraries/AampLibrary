@@ -1,6 +1,9 @@
 ﻿using AampLibrary.Structures;
+using AampLibrary.Yaml;
 using Revrs;
+using System.Buffers;
 using System.Runtime.InteropServices.Marshalling;
+using System.Text;
 
 namespace AampLibrary;
 
@@ -21,9 +24,20 @@ public class Aamp : ParameterList
         return new(ref aamp);
     }
 
+    public string ToYaml()
+    {
+        ArrayBufferWriter<byte> writer = new();
+        AampYamlWriter.Write(writer, this);
+        return Encoding.UTF8.GetString(writer.WrittenSpan);
+    }
+
+    public void ToYaml(IBufferWriter<byte> writer)
+    {
+        AampYamlWriter.Write(writer, this);
+    }
+
     public Aamp()
     {
-
     }
 
     internal unsafe Aamp(ref ImmutableAamp aamp)
