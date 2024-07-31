@@ -10,7 +10,7 @@ namespace AampLibrary.Yaml;
 
 public class AampYamlWriter
 {
-    public static void Write(IBufferWriter<byte> writer, Aamp aamp, IAampNameProvider? nameProvider)
+    public static void Write(IBufferWriter<byte> writer, Aamp aamp, IAampKeyProvider? keyProvider)
     {
         Utf8YamlEmitter emitter = new(writer);
 
@@ -29,36 +29,36 @@ public class AampYamlWriter
             }
             emitter.EndSequence();
 
-            WriteList(ref emitter, aamp, nameProvider);
+            WriteList(ref emitter, aamp, keyProvider);
         }
         emitter.EndMapping();
     }
 
-    private static void WriteList(ref Utf8YamlEmitter emitter, ParameterList parameterList, IAampNameProvider? nameProvider)
+    private static void WriteList(ref Utf8YamlEmitter emitter, ParameterList parameterList, IAampKeyProvider? keyProvider)
     {
         foreach (var (key, obj) in parameterList.Objects) {
-            WriteKey(ref emitter, key, nameProvider);
+            WriteKey(ref emitter, key, keyProvider);
             emitter.Tag("!obj");
-            WriteObject(ref emitter, obj, nameProvider);
+            WriteObject(ref emitter, obj, keyProvider);
         }
 
         foreach (var (key, list) in parameterList.Lists) {
-            WriteKey(ref emitter, key, nameProvider);
+            WriteKey(ref emitter, key, keyProvider);
             emitter.Tag("!list");
             emitter.BeginMapping();
             {
-                WriteList(ref emitter, list, nameProvider);
+                WriteList(ref emitter, list, keyProvider);
             }
             emitter.EndMapping();
         }
     }
 
-    private static void WriteObject(ref Utf8YamlEmitter emitter, ParameterObject parameterObject, IAampNameProvider? nameProvider)
+    private static void WriteObject(ref Utf8YamlEmitter emitter, ParameterObject parameterObject, IAampKeyProvider? keyProvider)
     {
         emitter.BeginMapping();
         {
             foreach (var (key, param) in parameterObject) {
-                WriteKey(ref emitter, key, nameProvider);
+                WriteKey(ref emitter, key, keyProvider);
                 WriteParameter(ref emitter, param);
             }
         }
@@ -291,9 +291,9 @@ public class AampYamlWriter
         emitter.EndSequence();
     }
 
-    private static void WriteKey(ref Utf8YamlEmitter emitter, uint hashedKey, IAampNameProvider? nameProvider)
+    private static void WriteKey(ref Utf8YamlEmitter emitter, uint hashedKey, IAampKeyProvider? keyProvider)
     {
-        if (nameProvider is not null && nameProvider[hashedKey] is string key) {
+        if (keyProvider is not null && keyProvider[hashedKey] is string key) {
             emitter.WriteString(key);
             return;
         }

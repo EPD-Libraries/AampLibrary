@@ -25,16 +25,16 @@ public class Aamp : ParameterList
         return new(ref aamp);
     }
 
-    public string ToYaml(IAampNameProvider? nameProvider = null)
+    public string ToYaml(IAampKeyProvider? keyProvider = null)
     {
         ArrayBufferWriter<byte> writer = new();
-        AampYamlWriter.Write(writer, this, nameProvider);
+        AampYamlWriter.Write(writer, this, keyProvider);
         return Encoding.UTF8.GetString(writer.WrittenSpan);
     }
 
-    public void ToYaml(IBufferWriter<byte> writer, IAampNameProvider? nameProvider = null)
+    public void ToYaml(IBufferWriter<byte> writer, IAampKeyProvider? keyProvider = null)
     {
-        AampYamlWriter.Write(writer, this, nameProvider);
+        AampYamlWriter.Write(writer, this, keyProvider);
     }
 
     public Aamp()

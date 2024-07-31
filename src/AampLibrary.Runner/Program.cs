@@ -3,7 +3,7 @@ using AampLibrary.IO;
 using AampLibrary.Runner.Helpers;
 
 Aamp aamp = TestAampGenerator.CreateAamp();
-string yaml = aamp.ToYaml(new AampNameProvider([
+string yaml = aamp.ToYaml(new AampKeyProvider([
     "TestObject",
     "Bool",
     "Float",

@@ -1,6 +1,6 @@
 ﻿namespace AampLibrary.IO;
 
-public interface IAampNameProvider
+public interface IAampKeyProvider
 {
     public string? this[uint crcHash] { get; }
 }
