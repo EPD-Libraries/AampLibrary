@@ -1,4 +1,5 @@
-﻿using AampLibrary.Structures;
+﻿using AampLibrary.IO;
+using AampLibrary.Structures;
 using AampLibrary.Yaml;
 using Revrs;
 using System.Buffers;
@@ -24,16 +25,16 @@ public class Aamp : ParameterList
         return new(ref aamp);
     }
 
-    public string ToYaml()
+    public string ToYaml(IAampNameProvider? nameProvider = null)
     {
         ArrayBufferWriter<byte> writer = new();
-        AampYamlWriter.Write(writer, this);
+        AampYamlWriter.Write(writer, this, nameProvider);
         return Encoding.UTF8.GetString(writer.WrittenSpan);
     }
 
-    public void ToYaml(IBufferWriter<byte> writer)
+    public void ToYaml(IBufferWriter<byte> writer, IAampNameProvider? nameProvider = null)
     {
-        AampYamlWriter.Write(writer, this);
+        AampYamlWriter.Write(writer, this, nameProvider);
     }
 
     public Aamp()

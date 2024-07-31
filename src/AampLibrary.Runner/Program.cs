@@ -1,13 +1,30 @@
 ﻿using AampLibrary;
+using AampLibrary.IO;
 using AampLibrary.Runner.Helpers;
-using AampLibrary.Yaml;
-using System.Buffers;
-using System.Text;
 
 Aamp aamp = TestAampGenerator.CreateAamp();
-
-ArrayBufferWriter<byte> writer = new();
-AampYamlWriter.Write(writer, aamp);
-
-string yaml = Encoding.UTF8.GetString(writer.WrittenSpan);
+string yaml = aamp.ToYaml(new AampNameProvider([
+    "TestObject",
+    "Bool",
+    "Float",
+    "Int",
+    "Vec2",
+    "Vec3",
+    "Vec4",
+    "Color",
+    "String32",
+    "String64",
+    "Curve1",
+    "Curve2",
+    "Curve3",
+    "Curve4",
+    "IntArray",
+    "FloatArray",
+    "String256",
+    "Quat",
+    "UInt32",
+    "UInt32Array",
+    "ByteArray",
+    "StringRef",
+]));
 Console.WriteLine(yaml);
