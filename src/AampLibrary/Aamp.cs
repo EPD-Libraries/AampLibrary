@@ -1,9 +1,11 @@
 ﻿using AampLibrary.IO;
 using AampLibrary.Yaml;
 using Revrs;
+using Revrs.Buffers;
 using System.Buffers;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AampLibrary;
 
@@ -30,6 +32,19 @@ public class Aamp : ParameterList
     public static Aamp FromImmutable(ref ImmutableAamp aamp)
     {
         return new(ref aamp);
+    }
+
+    public static Aamp FromYaml(string yaml)
+    {
+        int size = Encoding.UTF8.GetByteCount(yaml);
+        using ArraySegmentOwner<byte> data = ArraySegmentOwner<byte>.Allocate(size);
+        Encoding.UTF8.GetBytes(yaml, data.Segment);
+        return AampYamlParser.FromYaml(new(data.Segment));
+    }
+
+    public static Aamp FromYaml(ArraySegment<byte> utf8)
+    {
+        return AampYamlParser.FromYaml(new(utf8));
     }
 
     public string ToYaml(IAampKeyProvider? keyProvider = null)
