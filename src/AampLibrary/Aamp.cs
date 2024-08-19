@@ -20,6 +20,8 @@ public enum AampFlags : int
 public class Aamp : ParameterList
 {
     public AampFlags Flags { get; set; } = AampFlags.IsLittleEndian | AampFlags.IsUtf8;
+    public int Version { get; set; } = 2;
+    public int ParameterIOVersion { get; set; } = 0;
     public string Type { get; set; } = "xml";
 
     public static Aamp FromBinary(Span<byte> data)
@@ -66,6 +68,10 @@ public class Aamp : ParameterList
     internal unsafe Aamp(ref ImmutableAamp aamp)
         : base(ref aamp, ref aamp.IO, 0)
     {
+        Flags = aamp.Header.Flags;
+        Version = aamp.Header.Version;
+        ParameterIOVersion = aamp.Header.ParameterIOVersion;
+
         fixed (byte* ptr = aamp.Type) {
             Type = Utf8StringMarshaller.ConvertToManaged(ptr)
                 ?? string.Empty;

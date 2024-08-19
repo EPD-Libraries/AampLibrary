@@ -6,10 +6,10 @@ public struct AampHeader
     public const int SIZE = 0x30;
 
     public uint Magic;
-    public uint Version;
+    public int Version;
     public AampFlags Flags;
-    public uint FileSize;
-    public uint ParameterIOVersion;
+    public int FileSize;
+    public int ParameterIOVersion;
     public int ParameterIOOffset;
     public int ListCount;
     public int ObjectCount;
