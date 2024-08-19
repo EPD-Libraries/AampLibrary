@@ -1,10 +1,38 @@
-﻿using AampLibrary.Primitives;
+﻿using AampLibrary.IO;
+using AampLibrary.Primitives;
 using System.Numerics;
 
 namespace AampLibrary.Runner.Helpers;
 
 public static class TestAampGenerator
 {
+    public static readonly AampKeyProvider KeyProvider = new([
+        "TestObject",
+        "ListObject",
+        "TestObject2",
+        "Bool",
+        "Float",
+        "Int",
+        "Vec2",
+        "Vec3",
+        "Vec4",
+        "Color",
+        "String32",
+        "String64",
+        "Curve1",
+        "Curve2",
+        "Curve3",
+        "Curve4",
+        "IntArray",
+        "FloatArray",
+        "String256",
+        "Quat",
+        "UInt32",
+        "UInt32Array",
+        "ByteArray",
+        "StringRef",
+    ]);
+
     public static Aamp CreateAamp()
     {
         return new() {
