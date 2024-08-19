@@ -24,7 +24,7 @@ public class ParameterList
         Objects = new(parameterList.ObjectCount);
         for (int i = 0; i < parameterList.ObjectCount; i++) {
             ref AampParameterObject pObj = ref aamp.GetObject(i, offset + parameterList.ObjectsOffset * 4, out int objectOffset);
-            Objects[pObj.Name] = new(ref aamp, ref pObj, objectOffset);
+            Objects[pObj.Name] = new ParameterObject(ref aamp, ref pObj, objectOffset);
         }
     }
 }
