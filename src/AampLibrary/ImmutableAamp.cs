@@ -45,8 +45,6 @@ public unsafe ref struct ImmutableAamp
         Type = reader.ReadSpan<byte>(Header.ParameterIOOffset);
         Lists = reader.Data[reader.Position..];
         Objects = reader.Data[reader.Position..];
-
-        reader.Move(Header.ListCount * AampParameterList.SIZE);
         ParameterData = reader.Data[reader.Position..];
     }
 
