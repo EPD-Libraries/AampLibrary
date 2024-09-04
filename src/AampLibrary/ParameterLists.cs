@@ -54,7 +54,7 @@ public class ParameterLists : Dictionary<uint, ParameterList>, IDictionary<strin
 
     public void CopyTo(KeyValuePair<string, ParameterList>[] array, int arrayIndex)
     {
-        foreach (var (key, value) in array.AsSpan()[arrayIndex..]) {
+        foreach ((string key, ParameterList value) in array.AsSpan()[arrayIndex..]) {
             this[Crc32.ComputeHash(key)] = value;
         }
     }
