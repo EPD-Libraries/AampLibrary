@@ -25,21 +25,18 @@ public unsafe ref struct ImmutableAamp
         Header = reader.Read<AampHeader>();
 
         if (Header.Magic is not AampHeader.MAGIC) {
-            throw new InvalidDataException("""
-                Invalid magic.
-                """);
+            throw new InvalidDataException(
+                "Invalid magic.");
         }
 
         if (!Header.Flags.HasFlag(AampFlags.IsLittleEndian)) {
-            throw new InvalidDataException("""
-                Only little endian parameter archives are supported.
-                """);
+            throw new InvalidDataException(
+                "Only little endian parameter archives are supported.");
         }
 
         if (!Header.Flags.HasFlag(AampFlags.IsUtf8)) {
-            throw new InvalidDataException("""
-                Only UTF-8 parameter archives are supported.
-                """);
+            throw new InvalidDataException(
+                "Only UTF-8 parameter archives are supported.");
         }
 
         Type = reader.ReadSpan<byte>(Header.ParameterIOOffset);
