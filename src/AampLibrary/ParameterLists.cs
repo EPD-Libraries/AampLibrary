@@ -1,23 +1,20 @@
-﻿using AampLibrary.IO.Hashing;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using AampLibrary.IO;
+using AampLibrary.IO.Hashing;
 
 namespace AampLibrary;
 
-public class ParameterLists : Dictionary<uint, ParameterList>, IDictionary<string, ParameterList>
+public class ParameterLists : SortedDictionary<uint, ParameterList>, IDictionary<string, ParameterList>
 {
-    public ParameterLists()
+    public ParameterLists() : base(BinaryUInt32Comparer.Instance)
     {
     }
 
-    public ParameterLists(int capacity) : base(capacity)
+    public ParameterLists(IEnumerable<KeyValuePair<uint, ParameterList>> collection) : base(collection.ToDictionary(kvp => kvp.Key, kvp => kvp.Value), BinaryUInt32Comparer.Instance)
     {
     }
 
-    public ParameterLists(IEnumerable<KeyValuePair<uint, ParameterList>> collection) : base(collection)
-    {
-    }
-
-    public ParameterLists(IDictionary<uint, ParameterList> dictionary) : base(dictionary)
+    public ParameterLists(IDictionary<uint, ParameterList> dictionary) : base(dictionary, BinaryUInt32Comparer.Instance)
     {
     }
 
