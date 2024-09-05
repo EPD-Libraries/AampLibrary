@@ -1,4 +1,7 @@
-﻿using AampLibrary.IO;
+﻿using System.Buffers;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text;
+using AampLibrary.IO;
 using AampLibrary.Yaml;
 using Revrs;
 using Revrs.Buffers;
@@ -10,7 +13,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace AampLibrary;
 
 [Flags]
-public enum AampFlags : int
+public enum AampFlags
 {
     None = 0,
     IsLittleEndian = 1 << 0,
@@ -21,7 +24,7 @@ public class Aamp : ParameterList
 {
     public AampFlags Flags { get; set; } = AampFlags.IsLittleEndian | AampFlags.IsUtf8;
     public int Version { get; set; } = 2;
-    public int ParameterIOVersion { get; set; } = 0;
+    public int ParameterIoVersion { get; set; }
     public string Type { get; set; } = "xml";
 
     public static Aamp FromBinary(Span<byte> data)
@@ -70,7 +73,7 @@ public class Aamp : ParameterList
     {
         Flags = aamp.Header.Flags;
         Version = aamp.Header.Version;
-        ParameterIOVersion = aamp.Header.ParameterIOVersion;
+        ParameterIoVersion = aamp.Header.ParameterIOVersion;
 
         fixed (byte* ptr = aamp.Type) {
             Type = Utf8StringMarshaller.ConvertToManaged(ptr)
